@@ -1,9 +1,55 @@
+import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
+import { View, Button, Text, Swiper, SwiperItem, Image } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 
 import Navbar from '../../components/Navbar'
 import './index.less'
+
+const maps = [
+  {
+    listType:'solling',
+    name:'轮播图',
+    isRender:true
+  },
+  {
+    listType:'movie',
+    name:'电影',
+    icon:'film'
+  },
+  {
+    listType:'tv',
+    name:'电视剧',
+    icon:'tv'
+  },
+  {
+    listType:'comic',
+    name:'动漫',
+    icon:'gitlab'
+  },
+  {
+    listType:'variety',
+    name:'娱乐',
+    icon:'anchor'
+  },
+]
+
+const mapto = (list, maps) => {
+  const data = {};
+  list.forEach(d => {
+    maps.forEach(el => {
+      !data[el.listType] && (data[el.listType] = {
+        name: '',
+        list: []
+      });
+      if (el.listType === d.listType) {
+        !data[el.listType].name && (data[el.listType].name = el.name);
+        data[el.listType].list.push(d);
+      }
+    })
+  })
+  return data;
+}
 
 // #region 书写注意
 //
@@ -16,18 +62,19 @@ import './index.less'
 // #endregion
 
 type PageStateProps = {
-  counter: {
-    num: number
-  }
+  home: {
+    homeInfo: object
+  },
+  querying: boolean,
 }
 
 type PageDispatchProps = {
-  add: () => void;
-  dec: () => void;
-  asyncAdd: () => any;
+  getHomeData: () => void;
 }
 
 type PageOwnProps = {}
+
+type PageState = {}
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
@@ -35,22 +82,13 @@ interface Index {
   props: IProps;
 }
 
-@connect(({ counter }) => ({
-  counter
+@connect(({ home, loading }) => ({
+  home,
+  querying: loading.effects['home/getHomeData'],
 }), (dispatch) => ({
-  add () {
+  getHomeData () {
     dispatch({
-      type: 'counter/add',
-    })
-  },
-  dec () {
-    dispatch({
-      type: 'counter/minus',
-    })
-  },
-  asyncAdd () {
-    dispatch({
-      type: 'counter/asyncAdd',
+      type: 'home/getHomeData',
     })
   }
 }))
@@ -65,7 +103,11 @@ class Index extends Component {
    */
   config: Config = {
     navigationBarTitleText: '首页'
-  };
+  }
+
+  componentDidMount() {
+    this.props.getHomeData();
+  }
 
   componentWillReceiveProps(nextProps) {
     console.log(this.props, nextProps)
@@ -78,9 +120,20 @@ class Index extends Component {
   componentDidHide () { }
 
   render () {
+    const { querying, home } = this.props;
     return (
-      <View>
+      <View className='content'>
         <Navbar title={this.config.navigationBarTitleText} />
+        <Swiper>
+          {
+            home.homeInfo.solling &&
+            home.homeInfo.solling.list.map(item => (
+              <SwiperItem key={item.id}>
+                <Image src={item.Cover} />
+              </SwiperItem>
+            ))
+          }
+        </Swiper>
         <View className='index'>
           <Button className='add_btn' onClick={this.props.add}>+</Button>
           <Button className='dec_btn' onClick={this.props.dec}>-</Button>
@@ -100,4 +153,4 @@ class Index extends Component {
 //
 // #endregion
 
-export default Index
+export default Index as ComponentClass<PageOwnProps, PageState>
