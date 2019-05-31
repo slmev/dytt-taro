@@ -1,17 +1,13 @@
-import Taro, { Component } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 
 import './index.less'
 
 type ComponentProps = {
-  navbarData: {
-    title: string,
-    showCapsule: boolean
-  },
-  height?: number,
-  share?: boolean,
-  onNavBack?: () => void,
-  onBackHome?: () => void,
+  title?: string;
+  share?: boolean;
+  onNavBack?: () => void;
+  onBackHome?: () => void;
 }
 
 type ComponentState = {}
@@ -24,24 +20,22 @@ interface Navbar {
 
 const { statusBarHeight } = Taro.getSystemInfoSync();
 const info = Taro.getMenuButtonBoundingClientRect();
-console.log(info);
+console.log(info, Taro.getSystemInfoSync());
 
-class Navbar extends Component {
-  static defaultProps = {
-    navbarData: {
-      title: '',
-      showCapsule: false
-    }
-  }
-  render () {
-    const { navbarData, height = 0, share, onNavBack = () => {}, onBackHome = () => {} } = this.props;
-    const { title, showCapsule } = navbarData;
-    return (
-      <View className='nav-wrap' style={{ paddingTop: `${statusBarHeight}px`, height: '44px' }}>
-        <View className='nav-title' style={{ lineHeight: '44px' }}>{title}</View>
-      </View>
-    )
-  }
+function Navbar({ title, share, onNavBack, onBackHome, style }) {
+  return (
+    <View className='nav-wrap' style={{ paddingTop: `${statusBarHeight}px`, ...style }}>
+      <View className='nav-title'>{title}</View>
+    </View>
+  )
+}
+
+Navbar.defaultProps = {
+  title: '',
+  share: false,
+  style: {},
+  onNavBack: () => {},
+  onBackHome: () => {},
 }
 
 export default Navbar
