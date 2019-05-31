@@ -1,4 +1,3 @@
-import { ComponentClass } from 'react'
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button, Text } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
@@ -23,14 +22,12 @@ type PageStateProps = {
 }
 
 type PageDispatchProps = {
-  add: () => void
-  dec: () => void
-  asyncAdd: () => any
+  add: () => void;
+  dec: () => void;
+  asyncAdd: () => any;
 }
 
 type PageOwnProps = {}
-
-type PageState = {}
 
 type IProps = PageStateProps & PageDispatchProps & PageOwnProps
 
@@ -59,18 +56,18 @@ interface Index {
 }))
 class Index extends Component {
 
-    /**
+  /**
    * 指定config的类型声明为: Taro.Config
    *
    * 由于 typescript 对于 object 类型推导只能推出 Key 的基本类型
    * 对于像 navigationBarTextStyle: 'black' 这样的推导出的类型是 string
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
-    config: Config = {
+  config: Config = {
     navigationBarTitleText: '首页'
-  }
+  };
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     console.log(this.props, nextProps)
   }
 
@@ -83,7 +80,7 @@ class Index extends Component {
   render () {
     return (
       <View>
-        <Navbar navbarData={{ title: this.config.navigationBarTitleText || '', showCapsule: true }} />
+        <Navbar title={this.config.navigationBarTitleText} />
         <View className='index'>
           <Button className='add_btn' onClick={this.props.add}>+</Button>
           <Button className='dec_btn' onClick={this.props.dec}>-</Button>
@@ -103,4 +100,4 @@ class Index extends Component {
 //
 // #endregion
 
-export default Index as ComponentClass<PageOwnProps, PageState>
+export default Index
