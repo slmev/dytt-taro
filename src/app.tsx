@@ -45,7 +45,16 @@ class App extends Component {
     }
   }
 
-  componentDidMount () {}
+  componentDidMount () {
+    // 获取场景值
+    store.dispatch({
+      type: 'global/changeData',
+      payload: {
+        name: 'scene',
+        value: this.$router.params.scene,
+      }
+    })
+  }
 
   componentDidShow () {}
 
