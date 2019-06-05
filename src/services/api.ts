@@ -2,7 +2,6 @@ import request from '../utils/request'
 
 // 主页数据
 export async function getHomeDataFn() {
-  console.log(`${SERVER}/GetHomeData`);
   return request({
     url: `${SERVER}/GetHomeData`,
     method: 'GET',
