@@ -4,6 +4,8 @@ import { View, Button, Text, Swiper, SwiperItem, Image } from '@tarojs/component
 import { connect } from '@tarojs/redux'
 
 import Navbar from '../../components/Navbar'
+import ViewSlot from '../../components/ViewSlot'
+import ActivityIndicator from '../../components/ActivityIndicator'
 import png404 from '../../assets/404.png'
 import './index.less'
 
@@ -118,7 +120,7 @@ class Index extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(this.props, nextProps)
+    // console.log(this.props, nextProps)
   }
 
   componentWillUnmount () { }
@@ -140,26 +142,25 @@ class Index extends Component {
   render () {
     const { querying, home } = this.props;
     return (
-      <View className='content'>
-        <Navbar title={this.config.navigationBarTitleText} />
-        <Swiper autoplay circular>
-          {
-            home.homeInfo.solling &&
-            home.homeInfo.solling.list.map((item, index) => (
-              <SwiperItem key={item.id}>
-                <Image className='cover-image' src={item.Cover} onError={this.handleImageError.bind(this, index)} />
-              </SwiperItem>
-            ))
-          }
-        </Swiper>
-        <View className='index'>
-          <Button className='add_btn' onClick={this.props.add}>+</Button>
-          <Button className='dec_btn' onClick={this.props.dec}>-</Button>
-          <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>
-          <View><Text>{this.props.counter.num}</Text></View>
-          <View><Text>Hello, World</Text></View>
+      <ViewSlot>
+        <View className='content'>
+          <Navbar title={this.config.navigationBarTitleText} />
+          <Swiper autoplay circular>
+            {
+              home.homeInfo.solling &&
+              home.homeInfo.solling.list.map((item, index) => (
+                <SwiperItem key={item.id}>
+                  <Image className='cover-image' src={item.Cover} onError={this.handleImageError.bind(this, index)} />
+                </SwiperItem>
+              ))
+            }
+          </Swiper>
+          <View className='index'>
+            <ActivityIndicator color="#f00" size={25} />
+            <View><Text>Hello, World</Text></View>
+          </View>
         </View>
-      </View>
+      </ViewSlot>
     )
   }
 }
