@@ -1,7 +1,7 @@
 const reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
 
 /** 16进制颜色转为RGB格式 */
-export function hexToRgb(rgb) {
+export function hexToRgb(rgb = '') {
   let sColor = rgb.toLowerCase();
   if (sColor && reg.test(sColor)) {
     if (sColor.length === 4) {
