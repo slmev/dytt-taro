@@ -21,6 +21,8 @@ const store = createStore({
     err.preventDefault();
     console.error(err.message);
   },
+}, {
+  isLogger: false,
 });
 
 class App extends Component {
