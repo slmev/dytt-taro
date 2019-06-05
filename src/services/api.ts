@@ -52,17 +52,16 @@ export async function getDouBanInterestsF(params) {
  * 获取影片列表
  * @param { Object } params - { pageSize, pageIndex, Type, Channel, Area, Plot, Year, orderBy }
  */
-export async function getPageListFn(params) {
-  const {
-    pageSize = 30,
-    pageIndex = 1,
-    Type,
-    Channel = '',
-    Area = '',
-    Plot = '',
-    Year = '',
-    orderBy = 'updatetime',
-  } = params;
+export async function getPageListFn(params = {
+  pageSize: 30,
+  pageIndex: 1,
+  Type: undefined,
+  Channel: '',
+  Area: '',
+  Plot: '',
+  Year: '',
+  orderBy: 'updatetime',
+}) {
   return request({
     url: `${SERVER}/GetPageList`,
     method: 'GET',
@@ -74,12 +73,11 @@ export async function getPageListFn(params) {
  * 搜索查询影片列表
  * @param { Object } params - { pageSize, pageIndex, SearchKey }
  */
-export async function getSearchFn(params) {
-  const {
-    pageSize = 30,
-    pageIndex = 1,
-    SearchKey,
-  } = params;
+export async function getSearchFn(params = {
+  pageSize: 30,
+  pageIndex: 1,
+  SearchKey: undefined,
+}) {
   return request({
     url: `${SERVER}/GetPageList`,
     method: 'GET',
