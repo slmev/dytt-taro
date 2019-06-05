@@ -4,6 +4,7 @@ import { View, Button, Text, Swiper, SwiperItem, Image } from '@tarojs/component
 import { connect } from '@tarojs/redux'
 
 import Navbar from '../../components/Navbar'
+import png404 from '../../assets/404.png'
 import './index.less'
 
 const maps = [
@@ -70,6 +71,7 @@ type PageStateProps = {
 
 type PageDispatchProps = {
   getHomeData: () => void;
+  changeData: (params) => void;
 }
 
 type PageOwnProps = {}
@@ -89,6 +91,12 @@ interface Index {
   getHomeData () {
     dispatch({
       type: 'home/getHomeData',
+    })
+  },
+  changeData ({ name, value }) {
+    dispatch({
+      type: 'home/changeData',
+      payload: { name, value },
     })
   }
 }))
@@ -119,17 +127,27 @@ class Index extends Component {
 
   componentDidHide () { }
 
+  // 图片出现错误
+  handleImageError = (index) => {
+    const { home } = this.props;
+    home.homeInfo.solling.list[index].Cover = png404;
+    this.props.changeData({
+      name: 'homeInfo',
+      value: JSON.parse(JSON.stringify(home.homeInfo)),
+    });
+  };
+
   render () {
     const { querying, home } = this.props;
     return (
       <View className='content'>
         <Navbar title={this.config.navigationBarTitleText} />
-        <Swiper>
+        <Swiper autoplay circular>
           {
             home.homeInfo.solling &&
-            home.homeInfo.solling.list.map(item => (
+            home.homeInfo.solling.list.map((item, index) => (
               <SwiperItem key={item.id}>
-                <Image src={item.Cover} />
+                <Image className='cover-image' src={item.Cover} onError={this.handleImageError.bind(this, index)} />
               </SwiperItem>
             ))
           }
