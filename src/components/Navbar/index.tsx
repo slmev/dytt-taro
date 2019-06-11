@@ -18,14 +18,23 @@ interface Navbar {
   props: IProps;
 }
 
-const { statusBarHeight } = Taro.getSystemInfoSync();
+const { statusBarHeight, system } = Taro.getSystemInfoSync();
 const info = Taro.getMenuButtonBoundingClientRect();
 console.log(info, Taro.getSystemInfoSync());
 
 function Navbar({ title, share, onNavBack, onBackHome, style }) {
+  let [wrapStyle, titleStyle] = [{}, {}];
+  if (system.toLowerCase().indexOf('android') !== -1) {
+    wrapStyle = {
+      height: '48px',
+    };
+    titleStyle = {
+      lineHeight: '48px',
+    };
+  }
   return (
-    <View className='nav-wrap' style={{ paddingTop: `${statusBarHeight}px`, ...style }}>
-      <View className='nav-title'>{title}</View>
+    <View className='nav-wrap' style={{ paddingTop: `${statusBarHeight}px`, ...style, ...wrapStyle }}>
+      <View className='nav-title' style={titleStyle}>{title}</View>
     </View>
   )
 }

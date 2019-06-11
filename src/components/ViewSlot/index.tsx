@@ -2,6 +2,7 @@ import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import classNames from 'classnames'
 
+import systemInfo from '../../utils/systemInfo'
 import './index.less'
 
 type ComponentProps = {
@@ -18,7 +19,11 @@ interface ViewSlot {
   props: IProps;
 }
 
-const { statusBarHeight } = Taro.getSystemInfoSync();
+// const { statusBarHeight, system } = Taro.getSystemInfoSync();
+// let titleBarHeight = 44;
+// if (system.toLowerCase().indexOf('android') !== -1) {
+//   titleBarHeight = 48;
+// }
 
 class ViewSlot extends Taro.Component {
   static defaultProps = {
@@ -29,8 +34,9 @@ class ViewSlot extends Taro.Component {
 
   render() {
     const cls = classNames('content', this.props.className);
+    const { statusBarHeight, titleBarHeight } = systemInfo;
     return (
-      <View className={cls} style={{ paddingTop: `${statusBarHeight + 44}px`, ...this.props.style }}>
+      <View className={cls} style={{ paddingTop: `${statusBarHeight + titleBarHeight}px`, ...this.props.style }}>
         {this.props.children}
       </View>
     )

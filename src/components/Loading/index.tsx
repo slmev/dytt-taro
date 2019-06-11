@@ -8,7 +8,7 @@ function Loading({ style, size, text, textColor, themeColor }) {
   return (
     <View className='content'>
       <ActivityIndicator color={themeColor} size={size} />
-      <Text className='load-text' style={{ color: textColor }}>{text}</Text>
+      <Text className='load-text' style={{ color: textColor, ...style }}>{text}</Text>
     </View>
   )
 }
